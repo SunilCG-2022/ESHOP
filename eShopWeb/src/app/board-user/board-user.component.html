@@ -1,0 +1,259 @@
+<!-- 
+<div class="panel panel-primary">
+    <div class= panel-heading>
+        <h2>PRODUCTS</h2>
+      </div>
+      <div class="panel-body">
+        <table  id="datatable-example" class="display" width="100%">
+          <thead>
+          <tr>
+            
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let product of product">
+            <td>{{product.name}}</td>
+            <td>{{product.description}}</td>
+            <td>{{product.price}}</td>
+            
+            <button mat-raised-button color="primary" class="btn" routerLinkActive="active">Order</button>
+          <td><button  mat-raised-button color="warn" style='margin-right:16px' (click)="deleteProduct(product.id)" class="btn">Delete</button>
+         </td> -->
+<!-- </tr>
+          </tbody>
+        </table>
+
+    </div>
+  </div> -->
+
+<h2>Products</h2>
+
+<div class="mat-elevation-z8">
+  <table
+    mat-table
+    [dataSource]="finalProductdata"
+    matSort
+    class="mat-elevation-z8"
+  >
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Price</th>
+      <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element">
+        <div>
+          <a
+            mat-raised-button
+            (click)="ordered(element)"
+            color="primary"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            >Order</a
+          >
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayColums"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColums"></tr>
+  </table>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+</div>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Order *</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- <form [formGroup]="updateForm" (ngSubmit)="updateProduct()">
+        <div class="form-group">
+          <label for="name">Name *</label>
+          <input #name [(ngModel)]="productToUpdate.name" formControlName="name"
+          name="name" id="name"  class="form-control" autocomplete="off" >
+        </div>
+        <div *ngIf="f.name.invalid && (f.name.dirty || f.name.touched)" class="alert alert-danger">
+          <div *ngIf="f.name.errors?.['required']">
+            Name is required.
+          </div>
+        </div>
+       
+        <div class="form-group">
+          <label for="description">Description *</label>
+          <input #description [(ngModel)]="productToUpdate.description" name="description" id="description" formControlName="description"
+          class="form-control" autocomplete="off">
+        </div>
+        <div *ngIf="f.description.invalid && (f.description.dirty || f.description.touched)" class="alert alert-danger">
+          <div *ngIf="f.description.errors?.['required']">
+            Description is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price *</label>
+          <input #price [(ngModel)]="productToUpdate.price" formControlName="price"
+          name="price" id="price"  class="form-control" autocomplete="off" >
+        </div>
+        <div *ngIf="f.price.invalid && (f.price.dirty || f.price.touched)" class="alert alert-danger">
+          <div *ngIf="f.price.errors?.['required']">
+            Price is required.
+          </div>
+        </div>
+        <button class="btn btn-primary" [disabled]="updateForm.invalid" type="submit">Update</button>
+      </form>
+      </div>
+    </div> -->
+        <form [formGroup]="orderForm" (ngSubmit)="orderPlaced()">
+          <div class="container bg-light d-md-flex align-items-center">
+            <div class="card box2 shadow-sm">
+              <div
+                class="d-flex align-items-center justify-content-between p-md-5 p-4"
+              >
+                <span class="h5 fw-bold m-0">Payment methods</span>
+                <div class="btn btn-primary bar">
+                  <span class="fas fa-bars"></span>
+                </div>
+              </div>
+              <ul class="nav nav-tabs mb-3 px-md-4 px-2">
+                <li class="nav-item">
+                  <a class="nav-link px-2 active" aria-current="page" href="#"
+                    >Credit Card</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link px-2" href="">Mobile Payment</a>
+                </li>
+                <li class="nav-item ms-auto">
+                  <a class="nav-link px-2" href="">+ More</a>
+                </li>
+              </ul>
+              <div class="px-md-5 px-4 mb-4 d-flex align-items-center">
+                <div class="btn btn-success me-4">
+                  <span class="fas fa-plus"></span>
+                </div>
+                <div
+                  class="btn-group"
+                  role="group"
+                  aria-label="Basic radio toggle button group"
+                >
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="btnradio"
+                    id="btnradio1"
+                    autocomplete="off"
+                    checked
+                  />
+
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="btnradio"
+                    id="btnradio2"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+              
+                <div class="row">
+                  <div class="col-12">
+                    <div class="d-flex flex-column px-md-5 px-4 mb-4">
+                      <span>Credit Card</span>
+                      <div class="inputWithIcon">
+                        <input
+                          class="form-control"
+                          type="text"
+                          value="5136 1845 5468 3894"
+                        />
+                        <span class="">
+                          <img
+                            src="https://www.freepnglogos.com/uploads/mastercard-png/mastercard-logo-logok-15.png"
+                            alt=""
+                        /></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4">
+                      <span>Expiration<span class="ps-1">Date</span></span>
+                      <div class="inputWithIcon">
+                        <input type="text" class="form-control" value="05/20" />
+                        <span class="fas fa-calendar-alt"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column pe-md-5 px-md-0 px-4 mb-4">
+                      <span>Code CVV</span>
+                      <div class="inputWithIcon">
+                        <input
+                          type="password"
+                          class="form-control"
+                          value="123"
+                        />
+                        <span class="fas fa-lock"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-flex flex-column px-md-5 px-4 mb-4">
+                      <span>Name</span>
+                      <div class="inputWithIcon">
+                        <input
+                          #name
+                          [(ngModel)]="productordered.userName"
+                          formControlName="userName"
+                          name="userName"
+                          id="userName"
+                          class="form-control"
+                          autocomplete="off"
+                        />
+                        <span class="far fa-user"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 px-md-5 px-4 mt-3">
+                    <button mat-raised-button color="primary" class="btn">Pay</button>
+                  </div>
+                </div>
+              
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

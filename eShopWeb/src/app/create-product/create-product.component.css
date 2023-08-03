@@ -1,0 +1,26 @@
+h3{
+    text-align: center;
+ }
+ 
+ div.form
+ {
+     display: block;
+     text-align: center;
+ }
+ form
+ {
+     display: inline-block;
+     margin-left: auto;
+     margin-right: auto;
+     text-align: left;
+ }
+ .form-group{
+     padding: 1px;
+ }
+ .card{
+     padding: 30px;
+ }
+ span{
+     color: red;
+ }
+ 
